@@ -1,11 +1,10 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
+	"id": "extended-file-support",
+	"name": "Extended File Support",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "Adds file support for various file types. Allows viewing and embedding these filetypes. Includes: .kra, .psd, .obj, .gltf",
+	"author": "Nick de Bruin",
+	"authorUrl": "https://nickdebruin.me/",
 	"isDesktopOnly": false
 }
