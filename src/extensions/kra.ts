@@ -38,6 +38,7 @@ export class KRAComponent extends ExtensionComponent {
 			this.contentEl.createEl("i", { text: `Could not load ${this.file.path}` });
 		}
 	}
+	
 	onunload(): void {
 		if (this.objectURL) {
 			URL.revokeObjectURL(this.objectURL);
