@@ -2,7 +2,7 @@
 	"id": "extended-file-support",
 	"name": "Extended File Support",
 	"version": "1.0.0",
-	"minAppVersion": "0.15.0",
+	"minAppVersion": "0.18.0",
 	"description": "Adds file support for various file types. Allows viewing and embedding these filetypes. Includes: .kra, .psd, .obj, .glb, .gltf, and more.",
 	"author": "Nick de Bruin",
 	"authorUrl": "https://nickdebruin.me/",
