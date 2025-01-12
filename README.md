@@ -11,7 +11,9 @@ File types can be toggled in the settings.
 The file types that are currently supported are:
 
 - `.kra` (Files made in Krita)
-- 
+- `.psd` (Photoshop, other visual programs)
+- `.gltf`, `.glb` (3D scene format)
+- `.obj` (3D object format)
 
 ## Contributing
 

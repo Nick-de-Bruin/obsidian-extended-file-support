@@ -20,7 +20,7 @@ export default class ExtendedFileSupport extends Plugin {
 				if (this.settings[extension_type]) {
 					this.registerExtensions([extension_type], extension.view_type);
 
-					embedRegistry.registerExtension(extension_type, (context, file, p) => {
+					embedRegistry.registerExtension(extension_type, (context, file, _) => {
 						return new extension.component(context.containerEl, this, file, context.linktext);
 					});
 				}
