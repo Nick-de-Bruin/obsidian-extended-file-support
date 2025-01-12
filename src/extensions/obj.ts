@@ -1,7 +1,7 @@
 import ExtendedFileSupport from "main";
 import { TFile } from "obsidian";
 import { ThreeJSComponent, ThreeJSView } from "src/abstractions/threejsComponent";
-import { OBJLoader } from 'three/addons/loaders/OBJLoader.js'
+import { OBJLoader } from 'three/examples/jsm/Addons.js';
 
 export const VIEW_TYPE_OBJ = "extended-file-support-obj";
 
