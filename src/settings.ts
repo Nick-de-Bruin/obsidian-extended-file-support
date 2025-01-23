@@ -7,6 +7,7 @@ export interface ExtendedFileSupportSettings {
 	obj: boolean;
 	gltf: boolean;
 	glb: boolean;
+	stl: boolean;
 }
 
 export const DEFAULT_SETTINGS: ExtendedFileSupportSettings = {
@@ -17,4 +18,5 @@ export const DEFAULT_SETTINGS: ExtendedFileSupportSettings = {
 	obj: true,
 	gltf: true,
 	glb: true,
+	stl: true,
 }

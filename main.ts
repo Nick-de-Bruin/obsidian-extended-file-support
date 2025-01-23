@@ -154,5 +154,16 @@ class ExtendedFileSupportSettingTab extends PluginSettingTab {
 					await this.plugin.saveSettings();
 					this.plugin.toggleExtension("glb", value);
 				}));
+		
+		new Setting(containerEl)
+			.setName(".stl")
+			.setDesc("Stereolithography CAD files (Often used for 3d printing).")
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings.stl)
+				.onChange(async (value) => {
+					this.plugin.settings.stl = value;
+					await this.plugin.saveSettings();
+					this.plugin.toggleExtension("stl", value);
+				}));
 	}
 }
