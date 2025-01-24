@@ -18,6 +18,8 @@ export class STLComponent extends ThreeJSComponent {
 			
 			const group = new THREE.Group();
 			group.add(model);
+
+			group.rotateOnAxis(new THREE.Vector3(-1, 0, 0), Math.PI / 2)
 			
 			this.scaleGroup(group);
 			this.centerGroup(group);
