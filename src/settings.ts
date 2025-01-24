@@ -1,6 +1,7 @@
 export interface ExtendedFileSupportSettings {
 	kra: boolean;
 	psd: boolean;
+	ai: boolean;
 
 	// 3D objects
 	animate_3d_objects: boolean;
@@ -13,6 +14,7 @@ export interface ExtendedFileSupportSettings {
 export const DEFAULT_SETTINGS: ExtendedFileSupportSettings = {
 	kra: true,
 	psd: true,
+	ai: true,
 
 	animate_3d_objects: true,
 	obj: true,

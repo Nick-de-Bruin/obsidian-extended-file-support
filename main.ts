@@ -109,6 +109,17 @@ class ExtendedFileSupportSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(containerEl)
+			.setName(".ai")
+			.setDesc("Adobe Illustrator files. Only works with PDF compat enabled.")
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings.ai)
+				.onChange(async (value) => {
+					this.plugin.settings.ai = value;
+					await this.plugin.saveSettings();
+					this.plugin.toggleExtension("ai", value);
+				}));
+
+		new Setting(containerEl)
 			.setName("3D formats")
 			.setHeading();
 
