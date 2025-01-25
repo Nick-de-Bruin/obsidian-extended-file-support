@@ -121,7 +121,7 @@ class ExtendedFileSupportSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 				.setName(".ai render scale")
-				.setDesc("Render scale for Illustrator files. Higher means higher resolution, but longer load times. Default: 1.")
+				.setDesc("Render scale for Illustrator files. Higher means higher resolution, but longer load times. Default: 1.5.")
 				.addDropdown(dropdown => dropdown
 					.addOptions({"0.5": "0.5", "1.0": "1.0", "1.5": "1.5", "2.0": "2.0", "2.5": "2.5", "3.0": "3.0"})
 					.setValue(this.plugin.settings.ai_render_scale.toFixed(1))
