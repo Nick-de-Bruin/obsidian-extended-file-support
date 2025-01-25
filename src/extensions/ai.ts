@@ -12,22 +12,23 @@ export class AIComponent extends ExtensionComponent {
 		try {
 			const doc: PDFDocumentProxy = await pdfJS.getDocument(this.plugin.app.vault.getResourcePath(this.file)).promise;
 
-			console.log(doc);
-
 			const page = await doc.getPage(1);
 
-			const viewport = page.getViewport({scale: 1});
+			console.log(this.plugin.settings.ai_render_scale);
+
+			const SCALE = this.plugin.settings.ai_render_scale;
+			const viewport = page.getViewport({scale: SCALE});
 
 			const canvas = document.createElement('canvas');
 			canvas.width = viewport.width;
 			canvas.height = viewport.height;
+			canvas.addClass("full-width");
+
 			const context = canvas.getContext('2d');
 			
 			if (context) {
-				page.render({ canvasContext: context, viewport: viewport})
+				await page.render({ canvasContext: context, viewport: viewport}).promise;
 			}
-
-			canvas.addClass("full-width");
 
 			this.contentEl.empty();
 			this.contentEl.removeClass("extended-file-loading");
