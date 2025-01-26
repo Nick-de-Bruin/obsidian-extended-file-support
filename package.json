@@ -1,6 +1,6 @@
 {
 	"name": "extended-file-support",
-	"version": "1.2.1",
+	"version": "1.2.4",
 	"description": "Extended file support for Obsidian",
 	"main": "main.js",
 	"scripts": {
