@@ -1,8 +1,7 @@
-import ExtendedFileSupport from "main";
-import { TFile } from "obsidian";
 import { ThreeJSComponent, ThreeJSView } from "src/abstractions/threejsComponent";
 import { STLLoader } from "three/examples/jsm/Addons.js";
 import * as THREE from 'three';
+import { ExtensionComponent } from "src/extensionComponent";
 
 export const VIEW_TYPE_STL = "extended-file-support-STL";
 
@@ -30,7 +29,7 @@ export class STLComponent extends ThreeJSComponent {
 }
 
 export class STLView extends ThreeJSView<STLComponent> {
-	getComponent(): new (contentEl: HTMLElement, plugin: ExtendedFileSupport, file: TFile, linkText?: string | undefined) => STLComponent {
+	getComponent(): new (...args: ConstructorParameters<typeof ExtensionComponent>) => STLComponent {
 		return STLComponent;
 	}
 

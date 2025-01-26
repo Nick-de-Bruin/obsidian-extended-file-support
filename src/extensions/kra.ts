@@ -1,11 +1,13 @@
 import { BlobReader, BlobWriter, ZipReader } from "@zip.js/zip.js";
-import { ExtensionComponent } from "src/extensionComponent";
+import { AltTextParsed, ExtensionComponent } from "src/extensionComponent";
 import { ExtensionView } from "src/extensionView";
 
 export const VIEW_TYPE_KRA = "extended-file-support-kra";
 
 export class KRAComponent extends ExtensionComponent {
 	private objectURL?: string;
+
+	parseLinkText(_: AltTextParsed): void {	}
 
 	async loadFile(): Promise<void> {
 		const MERGED_PATH = "mergedimage.png";
@@ -28,6 +30,13 @@ export class KRAComponent extends ExtensionComponent {
 			const image = new Image();
 			image.src = this.objectURL;
 			image.alt = this.file.name;
+
+			if (this.width) {
+				image.width = this.width;
+			}
+			if (this.height) {
+				image.height = this.height;
+			}
 
 			this.contentEl.empty();
 			this.contentEl.removeClass("extended-file-loading");

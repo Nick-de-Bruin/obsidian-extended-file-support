@@ -1,11 +1,20 @@
 import { loadPdfJs } from "obsidian";
-import { ExtensionComponent } from "src/extensionComponent";
+import { AltTextParsed, ExtensionComponent } from "src/extensionComponent";
 import { ExtensionView } from "src/extensionView";
 import type { PDFDocumentProxy } from "pdfjs-dist"
 
 export const VIEW_TYPE_AI = "extended-file-support-ai";
 
 export class AIComponent extends ExtensionComponent {
+	scale: number;
+
+	parseLinkText(settings: AltTextParsed): void {
+		if (settings["scale"] && Number(settings["scale"])) {
+			this.scale = Number(settings["scale"]);
+		} else {
+			this.scale = this.plugin.settings.ai_render_scale;
+		}
+	}
 
 	async loadFile(): Promise<void> {
 		const pdfJS = await loadPdfJs();
@@ -14,21 +23,35 @@ export class AIComponent extends ExtensionComponent {
 
 			const page = await doc.getPage(1);
 
-			console.log(this.plugin.settings.ai_render_scale);
-
-			const SCALE = this.plugin.settings.ai_render_scale;
+			const SCALE = this.scale;
 			const viewport = page.getViewport({scale: SCALE});
 
 			const canvas = document.createElement('canvas');
-			canvas.width = viewport.width;
-			canvas.height = viewport.height;
-			canvas.addClass("full-width");
+			canvas.width = this.width ?? viewport.width;
+			canvas.height = this.height ?? (this.width ? (viewport.height / viewport.width * this.width) : viewport.height);
 
 			const context = canvas.getContext('2d');
-			
-			if (context) {
-				await page.render({ canvasContext: context, viewport: viewport}).promise;
+
+			if (this.width) {
+				const tempCanvas = document.createElement("canvas");
+				tempCanvas.width = viewport.width;
+				tempCanvas.height = viewport.height;
+				const tempContext = tempCanvas.getContext("2d");	
+
+				if (tempContext && context) {
+					await page.render({ canvasContext: tempContext, viewport: viewport}).promise;
+
+					context.drawImage(tempCanvas, 0, 0, tempCanvas.width, tempCanvas.height, 0, 0, canvas.width, canvas.height);
+				}
+			} else {
+				if (context) {
+					await page.render({ canvasContext: context, viewport: viewport}).promise;
+				}
+	
+				canvas.addClass("full-width");
 			}
+
+			
 
 			this.contentEl.empty();
 			this.contentEl.removeClass("extended-file-loading");

@@ -1,4 +1,4 @@
-import { ExtensionComponent } from "src/extensionComponent";
+import { AltTextParsed, ExtensionComponent } from "src/extensionComponent";
 import { ExtensionView } from "src/extensionView";
 import * as THREE from 'three';
 
@@ -8,23 +8,70 @@ export abstract class ThreeJSComponent extends ExtensionComponent {
 	renderer?: THREE.WebGLRenderer;
 	scene?: THREE.Scene;
 	resizeObserver?: ResizeObserver;
+	spin: boolean;
+	camLookAt: THREE.Vector3;
+	camPos: THREE.Vector3;
 
 	abstract loadModel(resource: string): void;
+
+	parseLinkText(settings: AltTextParsed): void {
+		//#region spin
+		if (settings["spin"] && settings["spin"].toLowerCase() == "true") {
+			this.spin = true;
+		} else if (settings["spin"] && settings["spin"].toLowerCase() == "false") {
+			this.spin = false
+		} else {
+			this.spin = this.plugin.settings.animate_3d_objects;
+		}
+		//#endregion spin
+
+		//#region camLookAt
+		let camLookAtValid = false;
+		if (settings["camLookAt"]) {
+			const [x, y, z] = settings["camLookAt"].split(',');
+			console.log(x, y, z);
+			if (Number(x) && Number(y) && Number(z)) {
+				this.camLookAt = new THREE.Vector3(Number(x), Number(y), Number(z));
+				camLookAtValid = true;
+			}
+		}
+
+		if (!camLookAtValid) {
+			this.camLookAt = new THREE.Vector3(0, 0, 0);
+		}
+		//#endregion camLookAt
+
+		//#region camPos
+		let camPosValid = false;
+		if (settings["camPos"]) {
+			const [x, y, z] = settings["camPos"].split(',');
+			if (Number(x) && Number(y) && Number(z)) {
+				this.camPos = new THREE.Vector3(Number(x), Number(y), Number(z));
+				camPosValid = true;
+			}
+		}
+		
+		if (!camPosValid) {
+			this.camPos = new THREE.Vector3(1, 0.5, 1);
+		}
+		//#endregion camPos
+	}
 
 	async loadFile(): Promise<void> {
 		this.scene = new THREE.Scene();
 
 		// Subtract 1 to remove the scrollbar...
-		let width = this.contentEl.innerWidth - 1;
+		let width = this.width ?? this.contentEl.innerWidth - 1;
 		width = width > 0 ? width : 1;
+		const height = this.height ?? width;
 
 		this.renderer = new THREE.WebGLRenderer();
-		this.renderer.setSize(width, width);
+		this.renderer.setSize(width, height);
 		this.renderer.setClearColor(0x000000, 0); 
 
-		const camera = new THREE.PerspectiveCamera( 75, 1, 0.1, 1000 );
-		camera.position.set(1, 0.5, 1);
-		camera.lookAt(0, 0, 0);
+		const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000 );
+		camera.position.set(this.camPos.x, this.camPos.y, this.camPos.z);
+		camera.lookAt(this.camLookAt);
 
 		const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 		this.scene.add(ambientLight);
@@ -47,12 +94,12 @@ export abstract class ThreeJSComponent extends ExtensionComponent {
 
 		this.renderer.setAnimationLoop(() => {
 			if (this.scene && this.renderer) {
-				if (this.plugin.settings.animate_3d_objects) {
+				if (this.spin) {
 					angle += 0.01;
 					camera.position.x = radius * Math.cos(angle);
 					camera.position.z = radius * Math.sin(angle);
 					
-					camera.lookAt(0, 0, 0);
+					camera.lookAt(this.camLookAt);
 				}
 
 				this.renderer.render(this.scene, camera);
@@ -60,13 +107,10 @@ export abstract class ThreeJSComponent extends ExtensionComponent {
 		});
 
 		this.resizeObserver = new ResizeObserver(() => {
-			let width = this.contentEl.innerWidth - 1;
-
-			if (this.linkText && !isNaN(Number(this.linkText))) {
-				width = Number(this.linkText);
+			if (!this.width) {
+				const width = this.contentEl.innerWidth - 1;	
+				this.renderer?.setSize(width, width);
 			}
-	
-			this.renderer?.setSize(width, width);
 			camera.updateProjectionMatrix();
 		});
 

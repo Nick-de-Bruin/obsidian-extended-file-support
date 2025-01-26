@@ -1,6 +1,5 @@
-import ExtendedFileSupport from "main";
-import { TFile } from "obsidian";
 import { ThreeJSComponent, ThreeJSView } from "src/abstractions/threejsComponent";
+import { ExtensionComponent } from "src/extensionComponent";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
 
 export const VIEW_TYPE_GLB = "extended-file-support-GLB";
@@ -20,7 +19,7 @@ export class GLBComponent extends ThreeJSComponent {
 }
 
 export class GLBView extends ThreeJSView<GLBComponent> {
-	getComponent(): new (contentEl: HTMLElement, plugin: ExtendedFileSupport, file: TFile, linkText?: string | undefined) => GLBComponent {
+	getComponent(): new (...args: ConstructorParameters<typeof ExtensionComponent>) => GLBComponent {
 		return GLBComponent;
 	}
 

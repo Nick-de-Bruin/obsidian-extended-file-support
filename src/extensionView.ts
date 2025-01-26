@@ -21,7 +21,7 @@ export abstract class ExtensionView<T extends ExtensionComponent> extends FileVi
 
 	async onLoadFile(file: TFile) {
 		const ComponentClass = this.getComponent();
-		this.component = new ComponentClass(this.contentEl, this.plugin, file);
+		this.component = new ComponentClass(this.contentEl, this.plugin, file, null);
 		this.component.loadFile();
 	}
 
