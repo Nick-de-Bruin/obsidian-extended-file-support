@@ -6,6 +6,14 @@ This is considered to be outside of the scope of this plugin.
 
 File types can be toggled in the settings.
 
+![](assets/embed_kra.png)
+
+*`.kra` file provided and made by Tio Tzen Ann ([Artstation](https://www.artstation.com/greasetanker), [Instagram](https://www.instagram.com/bullyinggnomes/)).*
+
+![](assets/embed_canvas.png)
+
+*Also works in Canvas.*
+
 # Currently Supported
 
 The file types that are currently supported are:
