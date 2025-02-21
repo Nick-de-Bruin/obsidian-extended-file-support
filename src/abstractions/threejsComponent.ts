@@ -29,7 +29,6 @@ export abstract class ThreeJSComponent extends ExtensionComponent {
 		let camLookAtValid = false;
 		if (settings["camLookAt"]) {
 			const [x, y, z] = settings["camLookAt"].split(',');
-			console.log(x, y, z);
 			if (Number(x) && Number(y) && Number(z)) {
 				this.camLookAt = new THREE.Vector3(Number(x), Number(y), Number(z));
 				camLookAtValid = true;

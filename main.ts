@@ -21,7 +21,6 @@ export default class ExtendedFileSupport extends Plugin {
 					this.registerExtensions([extension_type], extension.view_type);
 
 					embedRegistry.registerExtension(extension_type, (context, file, _) => {
-						console.log(context.containerEl);
 						return new extension.component(context.containerEl, this, file, context.containerEl.getAttr('alt'));
 					});
 				}
