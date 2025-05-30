@@ -65,7 +65,7 @@ export class AIComponent extends ExtensionComponent {
 		}
 	}
 
-	onunload(): void {}
+	cleanup(): void {}
 }
 
 export class AIView extends ExtensionView<AIComponent> {

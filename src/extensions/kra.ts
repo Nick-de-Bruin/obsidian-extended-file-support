@@ -48,7 +48,7 @@ export class KRAComponent extends ExtensionComponent {
 		}
 	}
 	
-	onunload(): void {
+	cleanup(): void {
 		if (this.objectURL) {
 			URL.revokeObjectURL(this.objectURL);
 			this.objectURL = undefined;

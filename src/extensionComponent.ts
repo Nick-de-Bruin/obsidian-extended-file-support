@@ -1,5 +1,5 @@
 import ExtendedFileSupport from "main";
-import { Component, TFile } from "obsidian";
+import { Component, EventRef, TFile } from "obsidian";
 
 export type AltTextParsed = {[key: string]: string}
 
@@ -10,6 +10,7 @@ export abstract class ExtensionComponent extends Component {
 	protected linkText: string | null;
 	protected width?: number;
 	protected height?: number;
+	protected fileModify?: EventRef;
 
 	public constructor(contentEl: HTMLElement, plugin: ExtendedFileSupport, file: TFile, linkText: string | null) {
 		super();
@@ -45,6 +46,16 @@ export abstract class ExtensionComponent extends Component {
 		}
 
 		this.parseLinkText(parsed);
+
+		this.fileModify = this.plugin.app.vault.on("modify", (f) => {
+			if (f === this.file) {
+				this.contentEl.addClass("extended-file-loading");
+                this.contentEl.empty();
+                this.contentEl.createEl("i", { text: `Reloading ${this.file?.name}...`});
+
+				this.loadFile();
+			}
+		});
 	}
 
 	abstract parseLinkText(settings: AltTextParsed): void;
@@ -56,5 +67,13 @@ export abstract class ExtensionComponent extends Component {
 		this.contentEl.createEl("i", { text: `Loading ${this.file?.name}...`});
 	}
 
-	abstract onunload(): void;
+	onunload(): void {
+		if (this.fileModify) {
+			this.plugin.app.vault.offref(this.fileModify);
+		}
+
+		this.cleanup();
+	}
+
+	abstract cleanup(): void;
 }

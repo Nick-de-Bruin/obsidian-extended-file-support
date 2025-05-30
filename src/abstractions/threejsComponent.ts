@@ -116,7 +116,7 @@ export abstract class ThreeJSComponent extends ExtensionComponent {
 		this.resizeObserver.observe(this.contentEl);
 	}
 
-	onunload(): void {
+	cleanup(): void {
 		this.renderer?.setAnimationLoop(null);
 		this.renderer?.dispose();
 

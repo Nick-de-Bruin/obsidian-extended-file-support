@@ -46,7 +46,7 @@ export class PSDComponent extends ExtensionComponent {
 		this.contentEl.append(canvasEl);
 	}
 	
-	onunload(): void {}
+	cleanup(): void {}
 }
 
 export class PSDView extends ExtensionView<PSDComponent> {
