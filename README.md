@@ -21,6 +21,7 @@ The file types that are currently supported are:
 - `.kra` (Files made in Krita)
 - `.psd` (Photoshop, other visual programs)
 - `.ai` (Adobe Illustrator)
+- `.concept` (Concepts app drawings)
 - `.gltf`, `.glb` (3D scene format)
 - `.obj` (3D object format)
 - `.stl` (3D format, often used for 3d printing)
