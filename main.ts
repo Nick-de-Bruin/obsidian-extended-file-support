@@ -120,6 +120,17 @@ class ExtendedFileSupportSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(containerEl)
+			.setName(".concept")
+			.setDesc("Concepts app drawings.")
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings.concept)
+				.onChange(async (value) => {
+					this.plugin.settings.concept = value;
+					await this.plugin.saveSettings();
+					this.plugin.toggleExtension("concept", value);
+				}));
+
+		new Setting(containerEl)
 				.setName(".ai render scale")
 				.setDesc("Render scale for Illustrator files. Higher means higher resolution, but longer load times. Default: 1.5.")
 				.addDropdown(dropdown => dropdown
