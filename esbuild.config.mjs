@@ -1,6 +1,8 @@
 import esbuild from "esbuild";
 import process from "process";
 import builtins from "builtin-modules";
+import { copyFileSync, mkdirSync } from "fs";
+import { join, dirname } from "path";
 
 const banner =
 `/*
@@ -41,9 +43,25 @@ const context = await esbuild.context({
 	minify: prod,
 });
 
+function copyWasmFile() {
+	try {
+		const sourceFile = join("node_modules", "sql.js", "dist", "sql-wasm.wasm");
+		const destFile = join("dist", "sql-wasm.wasm");
+
+		mkdirSync(dirname(destFile), { recursive: true });
+
+		copyFileSync(sourceFile, destFile);
+		console.log("✓ Copied sql-wasm.wasm to dist/");
+	} catch (error) {
+		console.error("Failed to copy WASM file:", error.message);
+	}
+}
+
 if (prod) {
 	await context.rebuild();
+	copyWasmFile();
 	process.exit(0);
 } else {
 	await context.watch();
+	copyWasmFile();
 }
