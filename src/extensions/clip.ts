@@ -1,7 +1,10 @@
 import { AltTextParsed, ExtensionComponent } from "src/extensionComponent";
 import { ExtensionView } from "src/extensionView";
 import { normalizePath } from "obsidian";
+
 import initSqlJs from 'sql.js'
+// @ts-ignore
+import wasmBinary from '../../node_modules/sql.js/dist/sql-wasm.wasm';
 
 export const VIEW_TYPE_CLIP = "extended-file-support-clip";
 
@@ -14,8 +17,6 @@ export class CLIPComponent extends ExtensionComponent {
     private async getSql() {
         if (!this.sql) {
             try{
-                const wasmFile = normalizePath(`${this.plugin.manifest.dir}/dist/sql-wasm.wasm`);
-                const wasmBinary = await this.plugin.app.vault.adapter.readBinary(wasmFile);
                 this.sql = await initSqlJs({
                     wasmBinary: wasmBinary
                 });

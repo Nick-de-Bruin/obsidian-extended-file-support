@@ -1,8 +1,8 @@
 import esbuild from "esbuild";
 import process from "process";
 import builtins from "builtin-modules";
-import { copyFileSync, mkdirSync } from "fs";
-import { join, dirname } from "path";
+import { readFileSync } from "fs";
+import { join } from 'path';
 
 const banner =
 `/*
@@ -12,6 +12,33 @@ if you want to view the source, please visit the github repository of this plugi
 `;
 
 const prod = (process.argv[2] === "production");
+
+const wasmPlugin = {
+    name: 'wasm',
+    setup(build) {
+        build.onResolve({ filter: /\.wasm$/ }, args => {
+            if (args.resolveDir === '') return;
+            return {
+                path: join(args.resolveDir, args.path),
+                namespace: 'wasm-binary',
+            };
+        });
+
+        build.onLoad({ filter: /\.wasm$/, namespace: 'wasm-binary' }, async (args) => {
+            const contents = readFileSync(args.path);
+            const wasmBase64 = contents.toString('base64');
+            
+            return {
+                contents: `
+                    const wasmBase64 = "${wasmBase64}";
+                    const wasmBinary = Uint8Array.from(atob(wasmBase64), c => c.charCodeAt(0));
+                    export default wasmBinary;
+                `,
+                loader: 'js',
+            };
+        });
+    },
+};
 
 const context = await esbuild.context({
 	banner: {
@@ -40,28 +67,15 @@ const context = await esbuild.context({
 	sourcemap: prod ? false : "inline",
 	treeShaking: true,
 	outfile: "main.js",
+	plugins: [
+		wasmPlugin
+	],
 	minify: prod,
 });
 
-function copyWasmFile() {
-	try {
-		const sourceFile = join("node_modules", "sql.js", "dist", "sql-wasm.wasm");
-		const destFile = join("dist", "sql-wasm.wasm");
-
-		mkdirSync(dirname(destFile), { recursive: true });
-
-		copyFileSync(sourceFile, destFile);
-		console.log("✓ Copied sql-wasm.wasm to dist/");
-	} catch (error) {
-		console.error("Failed to copy WASM file:", error.message);
-	}
-}
-
 if (prod) {
 	await context.rebuild();
-	copyWasmFile();
 	process.exit(0);
 } else {
 	await context.watch();
-	copyWasmFile();
 }
