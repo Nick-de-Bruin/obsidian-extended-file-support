@@ -36,18 +36,18 @@ export class CLIPComponent extends ExtensionComponent {
         if (offset !== -1) {
             const sqliteDB = arrayBuffer.slice(offset);
             const SQL = await this.getSql();
-            if( this.sql !== false ){
+            try{
                 const db = new SQL.Database(new Uint8Array(sqliteDB));
-
                 const result = db.exec("SELECT imageData FROM CanvasPreview");
-
-                if (!result || result.length === 0) {
+                if ( !result || result.length === 0 ) {
                     throw new Error("No image data found in CanvasPreview table");
                 }
 
                 const imageBytes = result[0].values[0][0] as Uint8Array;
                 const image_file = new Blob([imageBytes]);
                 this.objectURL = URL.createObjectURL(image_file);
+            } catch (error) {
+                console.error('Error accessing imageData from sqlite database.', error);
             }
         }
 
