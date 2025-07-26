@@ -1,6 +1,5 @@
 import { AltTextParsed, ExtensionComponent } from "src/extensionComponent";
 import { ExtensionView } from "src/extensionView";
-import { normalizePath } from "obsidian";
 
 import initSqlJs from 'sql.js'
 // @ts-ignore
