@@ -1,5 +1,6 @@
 export interface ExtendedFileSupportSettings {
 	kra: boolean;
+	clip: boolean;
 	psd: boolean;
 	ai: boolean;
 	ai_render_scale: number;
@@ -14,6 +15,7 @@ export interface ExtendedFileSupportSettings {
 
 export const DEFAULT_SETTINGS: ExtendedFileSupportSettings = {
 	kra: true,
+	clip: true,
 	psd: true,
 	ai: true,
 	ai_render_scale: 1.5,

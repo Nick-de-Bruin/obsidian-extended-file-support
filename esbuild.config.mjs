@@ -1,6 +1,8 @@
 import esbuild from "esbuild";
 import process from "process";
 import builtins from "builtin-modules";
+import { readFileSync } from "fs";
+import { join } from 'path';
 
 const banner =
 `/*
@@ -10,6 +12,33 @@ if you want to view the source, please visit the github repository of this plugi
 `;
 
 const prod = (process.argv[2] === "production");
+
+const wasmPlugin = {
+    name: 'wasm',
+    setup(build) {
+        build.onResolve({ filter: /\.wasm$/ }, args => {
+            if (args.resolveDir === '') return;
+            return {
+                path: join(args.resolveDir, args.path),
+                namespace: 'wasm-binary',
+            };
+        });
+
+        build.onLoad({ filter: /\.wasm$/, namespace: 'wasm-binary' }, async (args) => {
+            const contents = readFileSync(args.path);
+            const wasmBase64 = contents.toString('base64');
+            
+            return {
+                contents: `
+                    const wasmBase64 = "${wasmBase64}";
+                    const wasmBinary = Uint8Array.from(atob(wasmBase64), c => c.charCodeAt(0));
+                    export default wasmBinary;
+                `,
+                loader: 'js',
+            };
+        });
+    },
+};
 
 const context = await esbuild.context({
 	banner: {
@@ -38,6 +67,9 @@ const context = await esbuild.context({
 	sourcemap: prod ? false : "inline",
 	treeShaking: true,
 	outfile: "main.js",
+	plugins: [
+		wasmPlugin
+	],
 	minify: prod,
 });
 
