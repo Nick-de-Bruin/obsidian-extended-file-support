@@ -198,5 +198,16 @@ class ExtendedFileSupportSettingTab extends PluginSettingTab {
 					await this.plugin.saveSettings();
 					this.plugin.toggleExtension("stl", value);
 				}));
+
+		new Setting(containerEl)
+			.setName(".fbx")
+			.setDesc("Autodesk FBX format, commonly used for 3d models and animations.")
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings.fbx)
+				.onChange(async (value) => {
+					this.plugin.settings.fbx = value;
+					await this.plugin.saveSettings();
+					this.plugin.toggleExtension("fbx", value);
+				}));
 	}
 }
