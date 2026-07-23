@@ -1,0 +1,31 @@
+diff --git a/node_modules/@webtoon/psd/dist/index.js b/node_modules/@webtoon/psd/dist/index.js
+index 98fa45f..9a55a88 100644
+--- a/node_modules/@webtoon/psd/dist/index.js
++++ b/node_modules/@webtoon/psd/dist/index.js
+@@ -426,6 +426,17 @@ function ut(A, e, t) {
+   const n = (A.length - 2) / t, g = A.extract(n), a = t >= 2 ? A.extract(n) : void 0, i = t >= 3 ? A.extract(n) : void 0, s = t >= 4 ? A.extract(n) : void 0;
+   if (e === yA.Eight)
+     return { red: g, green: a, blue: i, alpha: s };
++  if (e === yA.Sixteen) {
++    const downsample = (buf) => {
++      if (!buf) return buf;
++      const view = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
++      const out = new Uint8Array(buf.byteLength / 2);
++      for (let idx = 0; idx < out.length; idx++)
++        out[idx] = view.getUint8(idx * 2);
++      return out;
++    };
++    return { red: downsample(g), green: downsample(a), blue: downsample(i), alpha: downsample(s) };
++  }
+   throw new He(`Unsupported image bit depth: ${e}`);
+ }
+ function ft(A, e, t, n) {
+@@ -1151,6 +1162,8 @@ function Dn(A) {
+ function wn(A, e) {
+   const t = new O(A);
+   t.pass(e.layerAndMaskSectionLengthFieldSize), t.pass(e.layerInfoSectionLengthFieldSize);
++  if (t.position + 2 > t.length)
++    return { layers: [], groups: [], orders: [], globalAdditionalLayerInformation: {} };
+   const n = t.read("i16"), g = Math.abs(n), a = Bn(t, g, e);
+   t.padding(t.position, 4), t.pass(t.read("u32"));
+   const i = Qn(t, e), s = [], I = [], Q = [], u = [{
