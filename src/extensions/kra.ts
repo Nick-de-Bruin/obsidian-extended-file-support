@@ -21,7 +21,7 @@ export class KRAComponent extends ExtensionComponent {
 		const entries = await reader.getEntries();
 		const target_entry = entries.find(entry => entry.filename === MERGED_PATH);
 
-		if (target_entry && target_entry.getData) {
+		if (target_entry && target_entry.directory === false) {
 			const image_file = await target_entry.getData(new BlobWriter());
 			this.objectURL = URL.createObjectURL(image_file);
 		}

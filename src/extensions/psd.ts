@@ -18,7 +18,7 @@ export class PSDComponent extends ExtensionComponent {
 		const context = canvasEl.getContext("2d");
 		const compositeBuffer = await psd.composite();
 		
-		const imageData = new ImageData(compositeBuffer, psd.width, psd.height);
+		const imageData = new ImageData(compositeBuffer as Uint8ClampedArray<ArrayBuffer>, psd.width, psd.height);
 
 		canvasEl.width = this.width ?? psd.width;
 		canvasEl.height = this.height ?? (this.width ? (psd.height / psd.width * this.width) : psd.height);
