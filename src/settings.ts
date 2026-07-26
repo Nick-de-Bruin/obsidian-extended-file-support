@@ -11,6 +11,7 @@ export interface ExtendedFileSupportSettings {
 	gltf: boolean;
 	glb: boolean;
 	stl: boolean;
+	fbx: boolean;
 }
 
 export const DEFAULT_SETTINGS: ExtendedFileSupportSettings = {
@@ -25,4 +26,5 @@ export const DEFAULT_SETTINGS: ExtendedFileSupportSettings = {
 	gltf: true,
 	glb: true,
 	stl: true,
+	fbx: true,
 }
