@@ -39,13 +39,13 @@ export class AIComponent extends ExtensionComponent {
 				const tempContext = tempCanvas.getContext("2d");	
 
 				if (tempContext && context) {
-					await page.render({ canvasContext: tempContext, viewport: viewport}).promise;
+					await page.render({ canvas: tempCanvas, canvasContext: tempContext, viewport: viewport}).promise;
 
 					context.drawImage(tempCanvas, 0, 0, tempCanvas.width, tempCanvas.height, 0, 0, canvas.width, canvas.height);
 				}
 			} else {
 				if (context) {
-					await page.render({ canvasContext: context, viewport: viewport}).promise;
+					await page.render({ canvas: canvas, canvasContext: context, viewport: viewport}).promise;
 				}
 	
 				canvas.addClass("full-width");

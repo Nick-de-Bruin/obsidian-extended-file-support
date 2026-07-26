@@ -4,6 +4,7 @@
 	"description": "Extended file support for Obsidian",
 	"main": "main.js",
 	"scripts": {
+		"postinstall": "patch-package",
 		"dev": "node esbuild.config.mjs",
 		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
 		"version": "node version-bump.mjs && git add manifest.json versions.json"
@@ -22,8 +23,9 @@
 		"esbuild": "0.25.0",
 		"obsidian": "latest",
 		"obsidian-typings": "^2.11.1",
+		"patch-package": "^8.0.1",
 		"tslib": "2.4.0",
-		"typescript": "4.7.4"
+		"typescript": "^5.9.3"
 	},
 	"dependencies": {
 		"@webtoon/psd": "^0.4.0",

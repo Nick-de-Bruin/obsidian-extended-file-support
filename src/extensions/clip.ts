@@ -43,7 +43,7 @@ export class CLIPComponent extends ExtensionComponent {
                     throw new Error("No image data found in CanvasPreview table");
                 }
 
-                const imageBytes = result[0].values[0][0] as Uint8Array;
+                const imageBytes = result[0].values[0][0] as Uint8Array<ArrayBuffer>;
                 const image_file = new Blob([imageBytes]);
                 this.objectURL = URL.createObjectURL(image_file);
             } catch (error) {
